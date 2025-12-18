@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Manual Handling Quiz – Joint Venture</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f6f8;
+      margin: 0;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 700px;
+      margin: auto;
+      background: #ffffff;
+      padding: 25px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    h1 {
+      text-align: center;
+      color: #1e4ba9;
+    }
+
+    .question {
+      margin-bottom: 20px;
+    }
+
+    .question p {
+      font-weight: bold;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+      cursor: pointer;
+    }
+
+    button {
+      background: #1e4ba9;
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    button:hover {
+      background: #163b82;
+    }
+
+    .result {
+      margin-top: 20px;
+      padding: 15px;
+      border-radius: 8px;
+      display: none;
+    }
+
+    .pass {
+      background: #d4edda;
+      color: #155724;
+    }
+
+    .fail {
+      background: #f8d7da;
+      color: #721c24;
+    }
+
+    .center {
+      text-align: center;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+    <h1>Manual Handling & Lifting Quiz</h1>
+    <p class="center">Test your understanding of safe manual handling techniques.</p>
+
+    <form id="quizForm">
+
+      <!-- Question 1 -->
+      <div class="question">
+        <p>1. What should you do before lifting any load?</p>
+        <label><input type="radio" name="q1" value="0"> Lift quickly to save time</label>
+        <label><input type="radio" name="q1" value="1"> Assess the load and surroundings</label>
+        <label><input type="radio" name="q1" value="0"> Twist your body while lifting</label>
+      </div>
+
+      <!-- Question 2 -->
+      <div class="question">
+        <p>2. Which posture is correct when lifting?</p>
+        <label><input type="radio" name="q2" value="1"> Bend knees and keep back straight</label>
+        <label><input type="radio" name="q2" value="0"> Bend at the waist</label>
+        <label><input type="radio" name="q2" value="0"> Keep legs straight</label>
+      </div>
+
+      <!-- Question 3 -->
+      <div class="question">
+        <p>3. What is the safest way to turn while carrying a load?</p>
+        <label><input type="radio" name="q3" value="0"> Twist your spine</label>
+        <label><input type="radio" name="q3" value="1"> Turn using your feet</label>
+        <label><input type="radio" name="q3" value="0"> Lean sideways</label>
+      </div>
+
+      <!-- Question 4 -->
+      <div class="question">
+        <p>4. When should team lifting be used?</p>
+        <label><input type="radio" name="q4" value="1"> When the load is heavy or awkward</label>
+        <label><input type="radio" name="q4" value="0"> Only when working fast</label>
+        <label><input type="radio" name="q4" value="0"> Never required</label>
+      </div>
+
+      <!-- Question 5 -->
+      <div class="question">
+        <p>5. How should a load be lowered safely?</p>
+        <label><input type="radio" name="q5" value="0"> Drop it quickly</label>
+        <label><input type="radio" name="q5" value="1"> Bend knees and lower slowly</label>
+        <label><input type="radio" name="q5" value="0"> Twist while lowering</label>
+      </div>
+
+      <div class="center">
+        <button type="button" onclick="checkAnswers()">Submit Quiz</button>
+      </div>
+
+    </form>
+
+    <div id="result" class="result"></div>
+
+    <div class="center" style="margin-top: 15px;">
+      <button onclick="location.reload()">Retry Quiz</button>
+    </div>
+  </div>
+
+  <script>
+    function checkAnswers() {
+      const form = document.getElementById("quizForm");
+      let score = 0;
+      let total = 5;
+
+      for (let i = 1; i <= total; i++) {
+        const q = form["q" + i];
+        if (q) {
+          for (let j = 0; j < q.length; j++) {
+            if (q[j].checked) {
+              score += parseInt(q[j].value);
+            }
+          }
+        }
+      }
+
+      const resultBox = document.getElementById("result");
+      resultBox.style.display = "block";
+
+      if (score >= 4) {
+        resultBox.className = "result pass";
+        resultBox.innerHTML = `
+          <h3>Result: PASS</h3>
+          <p>You scored ${score} out of ${total}.</p>
+          <p>Well done! You have demonstrated good understanding of safe manual handling techniques.</p>
+        `;
+      } else {
+        resultBox.className = "result fail";
+        resultBox.innerHTML = `
+          <h3>Result: TRY AGAIN</h3>
+          <p>You scored ${score} out of ${total}.</p>
+          <p>Please review the training content and try again.</p>
+        `;
+      }
+    }
+  </script>
+
+</body>
+</html>
