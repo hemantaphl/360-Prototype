@@ -3,16 +3,13 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Joint Venture | Manual Handling Training</title>
+  <title>Manual360 | Manual Handling Training (Demo)</title>
 
   <!-- A-Frame -->
   <script src="https://aframe.io/releases/1.7.0/aframe.min.js"></script>
 
   <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-    }
+    body { margin: 0; font-family: Arial, sans-serif; }
 
     #ui {
       position: fixed;
@@ -24,6 +21,10 @@
       flex-wrap: wrap;
     }
 
+    .btn.active {
+      background: #000;        /* darker than others */
+      box-shadow: 0 0 0 2px #00E5FF inset;
+    } 
     .btn {
       padding: 10px 14px;
       border: none;
@@ -34,194 +35,225 @@
       font-weight: 600;
     }
 
-    .btn.secondary {
-      background: #444;
-    }
+    .btn.secondary { background: #444; }
 
-    /* Popup panel */
     #panel {
       position: fixed;
       bottom: 12px;
       left: 12px;
       z-index: 9999;
       width: min(520px, calc(100vw - 24px));
-      background: rgba(0, 0, 0, 0.85);
+      background: rgba(0,0,0,0.85);
       color: #fff;
       border-radius: 14px;
       padding: 14px;
       display: none;
     }
 
-    #panel h3 {
-      margin: 0 0 8px 0;
-      font-size: 18px;
-    }
-
-    #panel p {
-      margin: 0 0 10px 0;
-      font-size: 14px;
-      line-height: 1.4;
-    }
-
-    #panel .row {
-      display: flex;
-      justify-content: flex-end;
-    }
+    #panel h3 { margin: 0 0 8px; font-size: 18px; }
+    #panel p { margin: 0 0 10px; font-size: 14px; line-height: 1.4; }
+    #panel .row { display: flex; justify-content: flex-end; }
   </style>
 </head>
 
 <body>
 
-  <!-- UI Buttons -->
-  <div id="ui">
-    <button class="btn" id="btnScene1">Scene 1: Picking Area</button>
-    <button class="btn secondary" id="btnScene2">Scene 2: Loading Bay</button>
-    <button class="btn secondary" id="btnQuiz">Start Quiz</button>
+<!-- UI Buttons -->
+<div id="ui">
+  <button class="btn" id="btnScene1">Scene 1: Picking Area</button>
+  <button class="btn secondary" id="btnScene2">Scene 2: Loading Bay</button>
+  <button class="btn secondary" id="btnQuiz">Start Quiz</button>
+</div>
+
+<!-- Info Panel -->
+<div id="panel">
+  <h3 id="panelTitle"></h3>
+  <p id="panelText"></p>
+  <div class="row">
+    <button class="btn secondary" id="btnClose">Close</button>
   </div>
+</div>
 
-  <!-- Info Panel -->
-  <div id="panel">
-    <h3 id="panelTitle"></h3>
-    <p id="panelText"></p>
-    <div class="row">
-      <button class="btn secondary" id="btnClose">Close</button>
-    </div>
-  </div>
+<a-scene>
 
-  <a-scene>
-    <a-assets>
-      <!-- 360 images -->
-      <img id="scene1img" src="assets/scene1.jpg" crossorigin="anonymous">
-      <img id="scene2img" src="assets/scene2.jpg" crossorigin="anonymous">
-    </a-assets>
+  <a-assets>
+    <img id="scene1img" src="assets/scene1.jpg" crossorigin="anonymous">
+    <img id="scene2img" src="assets/scene2.jpg" crossorigin="anonymous">
+  </a-assets>
 
-    <!-- Camera -->
-    <a-camera position="0 1.6 0">
-    <a-cursor
-        raycaster="objects: .hotspot"
-        fuse="false"
-        color="#FFFFFF">
-    </a-cursor>
-    </a-camera>
+  <!-- Camera + gaze cursor (VR compatible) -->
+  <a-camera position="0 1.6 0">
+    <a-cursor fuse="false" color="#FFFFFF"></a-cursor>
+  </a-camera>
 
+  <!-- Mouse cursor (DESKTOP CLICK SUPPORT) -->
+  <a-entity
+    cursor="rayOrigin: mouse; fuse: false"
+    raycaster="objects: .hotspot">
+  </a-entity>
 
-    <!-- Scene 1: Picking Area -->
-    <a-entity id="scene1">
-      <a-sky src="#scene1img" rotation="0 -90 0"></a-sky>
+  <!-- SCENE 1 -->
+  <a-entity id="scene1">
+    <a-sky src="#scene1img" rotation="0 -90 0"></a-sky>
 
-      <a-circle class="hotspot"
-        position="2 1.6 -3"
-        radius="0.18"
-        color="#00E5FF"
-        data-title="Load Assessment"
-        data-text="Before lifting, assess the load for weight, size and stability. Ensure the path is clear and use mechanical aids or assistance if required.">
-      </a-circle>
+    <!-- HOTSPOTS -->
+    <a-circle class="hotspot"
+      position="2 1.6 -3"
+      radius="0.18"
+      color="#00E5FF"
+      material="transparent:true; opacity:1"
+      animation__pulse="property: scale; dir: alternate; dur: 800; loop: true; to: 1.25 1.25 1.25"
+      animation__blink="property: material.opacity; dir: alternate; dur: 800; loop: true; to: 0.45"
+      data-title="Load Assessment"
+      data-text="Before lifting, assess the load for weight, size, and stability. Ensure the path is clear and use assistance if needed.">
+    </a-circle>
 
-      <a-circle class="hotspot"
-        position="-1.5 1.3 -3"
-        radius="0.18"
-        color="#00E5FF"
-        data-title="Safe Stance & Posture"
-        data-text="Stand close to the load with feet shoulder-width apart. Bend your knees, keep your back straight and engage your core muscles.">
-      </a-circle>
+    <a-circle class="hotspot"
+      position="-1.5 1.3 -3"
+      radius="0.18"
+      color="#00E5FF"
+      material="transparent:true; opacity:1"
+      animation__pulse="property: scale; dir: alternate; dur: 800; loop: true; to: 1.25 1.25 1.25"
+      animation__blink="property: material.opacity; dir: alternate; dur: 800; loop: true; to: 0.45"
+      data-title="Safe Stance & Posture"
+      data-text="Stand close to the load, feet shoulder-width apart. Bend knees, keep back straight, and engage core.">
+    </a-circle>
 
-      <a-circle class="hotspot"
-        position="0.2 2.0 -3"
-        radius="0.18"
-        color="#00E5FF"
-        data-title="Correct Lifting Technique"
-        data-text="Lift smoothly using your leg muscles, keep the load close to your body and avoid sudden or jerky movements.">
-      </a-circle>
+    <a-circle class="hotspot"
+      position="0.2 2.0 -3"
+      radius="0.18"
+      color="#00E5FF"
+      material="transparent:true; opacity:1"
+      animation__pulse="property: scale; dir: alternate; dur: 800; loop: true; to: 1.25 1.25 1.25"
+      animation__blink="property: material.opacity; dir: alternate; dur: 800; loop: true; to: 0.45"
+      data-title="Correct Lifting Technique"
+      data-text="Lift smoothly using leg muscles, keep load close, and avoid jerky movements.">
+    </a-circle>
 
-      <a-circle class="hotspot"
-        position="3.2 1.2 -1.8"
-        radius="0.18"
-        color="#FFD54F"
-        data-title="Correct vs Incorrect Posture"
-        data-text="Correct posture includes bent knees, straight back and load close to the body. Incorrect posture involves bending at the waist or twisting the spine, increasing injury risk.">
-      </a-circle>
-    </a-entity>
+    <a-circle class="hotspot"
+      position="3.2 1.2 -1.8"
+      radius="0.18"
+      color="#FFD54F"
+      material="transparent:true; opacity:1"
+      animation__pulse="property: scale; dir: alternate; dur: 800; loop: true; to: 1.25 1.25 1.25"
+      animation__blink="property: material.opacity; dir: alternate; dur: 800; loop: true; to: 0.45"
+      data-title="Correct vs Incorrect Posture"
+      data-text="Correct: knees bent, back straight, load close. Incorrect: bending or twisting spine increases injury risk.">
+    </a-circle>
+  </a-entity>
 
-    <!-- Scene 2: Loading Bay -->
-    <a-entity id="scene2" visible="false">
-      <a-sky src="#scene2img" rotation="0 -90 0"></a-sky>
+  <!-- SCENE 2 -->
+  <a-entity id="scene2" visible="false">
+    <a-sky src="#scene2img" rotation="0 -90 0"></a-sky>
 
-      <a-circle class="hotspot"
-        position="1.8 1.6 -3"
-        radius="0.18"
-        color="#00E5FF"
-        data-title="Avoid Twisting"
-        data-text="Do not twist your torso while carrying a load. Always turn by moving your feet and keeping your shoulders aligned with your hips.">
-      </a-circle>
+    <a-circle class="hotspot"
+      position="1.8 1.6 -3"
+      radius="0.18"
+      color="#00E5FF"
+      material="transparent:true; opacity:1"
+      animation__pulse="property: scale; dir: alternate; dur: 800; loop: true; to: 1.25 1.25 1.25"
+      animation__blink="property: material.opacity; dir: alternate; dur: 800; loop: true; to: 0.45"
+      data-title="Avoid Twisting"
+      data-text="Do not twist your torso. Turn using your feet while keeping shoulders aligned.">
+    </a-circle>
 
-      <a-circle class="hotspot"
-        position="-2.0 1.4 -3"
-        radius="0.18"
-        color="#00E5FF"
-        data-title="Team Lifting"
-        data-text="Use team lifting when a load is heavy or awkward. Communicate clearly and lift, move and lower together.">
-      </a-circle>
+    <a-circle class="hotspot"
+      position="-2.0 1.4 -3"
+      radius="0.18"
+      color="#00E5FF"
+      material="transparent:true; opacity:1"
+      animation__pulse="property: scale; dir: alternate; dur: 800; loop: true; to: 1.25 1.25 1.25"
+      animation__blink="property: material.opacity; dir: alternate; dur: 800; loop: true; to: 0.45"
+      data-title="Team Lifting"
+      data-text="Use team lifting for heavy or awkward loads. Communicate clearly and lift together.">
+    </a-circle>
 
-      <a-circle class="hotspot"
-        position="0.2 1.1 -3"
-        radius="0.18"
-        color="#00E5FF"
-        data-title="Safe Lowering"
-        data-text="Lower loads carefully by bending your knees, keeping your back straight and placing the load down slowly.">
-      </a-circle>
-    </a-entity>
-  </a-scene>
+    <a-circle class="hotspot"
+      position="0.2 1.1 -3"
+      radius="0.18"
+      color="#00E5FF"
+      material="transparent:true; opacity:1"
+      animation__pulse="property: scale; dir: alternate; dur: 800; loop: true; to: 1.25 1.25 1.25"
+      animation__blink="property: material.opacity; dir: alternate; dur: 800; loop: true; to: 0.45"
+      data-title="Safe Lowering"
+      data-text="Lower loads slowly by bending knees, keeping back straight, and placing load carefully.">
+    </a-circle>
+  </a-entity>
 
-  <script>
-    const scene1 = document.getElementById("scene1");
-    const scene2 = document.getElementById("scene2");
-    const panel = document.getElementById("panel");
-    const panelTitle = document.getElementById("panelTitle");
-    const panelText = document.getElementById("panelText");
+</a-scene>
 
-    function showPanel(title, text) {
-      panelTitle.textContent = title;
-      panelText.textContent = text;
-      panel.style.display = "block";
+<script>
+  const scene1 = document.getElementById("scene1");
+  const scene2 = document.getElementById("scene2");
+
+  const btnScene1 = document.getElementById("btnScene1");
+  const btnScene2 = document.getElementById("btnScene2");
+  const btnQuiz   = document.getElementById("btnQuiz");
+
+  const panel = document.getElementById("panel");
+  const panelTitle = document.getElementById("panelTitle");
+  const panelText = document.getElementById("panelText");
+
+  function showPanel(title, text) {
+    panelTitle.textContent = title;
+    panelText.textContent = text;
+    panel.style.display = "block";
+  }
+
+  function hidePanel() {
+    panel.style.display = "none";
+  }
+
+  document.getElementById("btnClose").onclick = hidePanel;
+
+  function setActiveButton(activeBtn) {
+    [btnScene1, btnScene2, btnQuiz].forEach(btn =>
+      btn.classList.remove("active")
+    );
+    activeBtn.classList.add("active");
+  }
+
+  // Scene 1 (Picking Area)
+  btnScene1.onclick = () => {
+    scene1.setAttribute("visible", true);
+    scene2.setAttribute("visible", false);
+    hidePanel();
+    setActiveButton(btnScene1);
+  };
+
+  // Scene 2 (Loading Bay)
+  btnScene2.onclick = () => {
+    scene1.setAttribute("visible", false);
+    scene2.setAttribute("visible", true);
+    hidePanel();
+    setActiveButton(btnScene2);
+  };
+
+  // Quiz
+  btnQuiz.onclick = () => {
+    setActiveButton(btnQuiz);
+    window.location.href = "quiz.html";
+  };
+
+  AFRAME.registerComponent("clickable", {
+    init: function () {
+      this.el.addEventListener("click", () => {
+        showPanel(
+          this.el.getAttribute("data-title"),
+          this.el.getAttribute("data-text")
+        );
+      });
     }
+  });
 
-    function hidePanel() {
-      panel.style.display = "none";
-    }
+  document.querySelectorAll(".hotspot").forEach(el => {
+    el.setAttribute("clickable", "");
+  });
 
-    document.getElementById("btnClose").onclick = hidePanel;
+  // Default active button on load
+  setActiveButton(btnScene1);
+</script>
 
-    document.getElementById("btnScene1").onclick = () => {
-      scene1.setAttribute("visible", true);
-      scene2.setAttribute("visible", false);
-      hidePanel();
-    };
-
-    document.getElementById("btnScene2").onclick = () => {
-      scene1.setAttribute("visible", false);
-      scene2.setAttribute("visible", true);
-      hidePanel();
-    };
-
-    document.getElementById("btnQuiz").onclick = () => {
-      window.location.href = "quiz.html";
-    };
-
-    AFRAME.registerComponent("clickable", {
-      init: function () {
-        this.el.addEventListener("click", () => {
-          showPanel(
-            this.el.getAttribute("data-title"),
-            this.el.getAttribute("data-text")
-          );
-        });
-      }
-    });
-
-    document.querySelectorAll(".hotspot").forEach(el => {
-      el.setAttribute("clickable", "");
-    });
-  </script>
 
 </body>
 </html>
